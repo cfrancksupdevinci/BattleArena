@@ -35,4 +35,21 @@ public class PlayerController {
         }
         return Response.ok(player).build();
     }
+
+    @GET
+    @Path("/can-move/{id}/{x}/{y}")
+    public Response canMove(@PathParam("id") Long id,
+                            @PathParam("x") int x,
+                            @PathParam("y") int y) {
+        Player player = repository.getPlayerById(id);
+
+        if (player == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Player not found").build();
+        }
+
+        //TODO Victoria: modifier nom "GameLogic par le nom du fichier java utiliser pour le FX
+        boolean canMove = GameLogic.canMove(player, x, y);
+
+        return Response.ok(canMove).build();
+    }
 }
