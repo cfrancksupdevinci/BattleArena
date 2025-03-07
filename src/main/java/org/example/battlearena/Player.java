@@ -10,6 +10,7 @@ public class Player {
     private int row;
     private int col;
     private Circle avatar; // Représentation graphique du joueur
+    private boolean hasAttacked = false;
 
     public Player(String name, int health, int xp, int row, int col) {
         this.name = name;
@@ -74,5 +75,17 @@ public class Player {
         this.row = newRow;
         this.col = newCol;
     }
-}
 
+    public void addXP(int xp) {
+        this.xp += xp;
+    }
+
+    public boolean hasAttacked() {
+        return hasAttacked;
+    }
+
+    public void setHasAttacked(boolean hasAttacked) {
+        this.hasAttacked = hasAttacked;
+    }
+
+}

@@ -1,4 +1,8 @@
 package org.example.battlearena;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -7,6 +11,7 @@ import javafx.scene.layout.StackPane;
 public class GameGrid {
     private static final int GRID_SIZE = 10;
     private final GridPane grid;
+    private List<SpecialTile> specialTiles = new ArrayList<>();
 
     public GameGrid() {
         grid = new GridPane();
@@ -53,6 +58,18 @@ public class GameGrid {
         StackPane obstacleContainer = new StackPane();
         obstacleContainer.getChildren().add(obstacle.getShape());
         addToGrid(obstacleContainer, obstacle.getRow(), obstacle.getCol());
+    }
+
+    public void addSpecialTile(SpecialTile tile) {
+        specialTiles.add(tile);
+        // Optionnel : Ajoutez une indication visuelle pour les cases spéciales
+        javafx.scene.layout.StackPane tilePane = new StackPane();
+        tilePane.setStyle("-fx-background-color: gold; -fx-border-color: black;");
+        addToGrid(tilePane, tile.getRow(), tile.getCol());
+    }
+
+    public List<SpecialTile> getSpecialTiles() {
+        return specialTiles;
     }
 
 }
