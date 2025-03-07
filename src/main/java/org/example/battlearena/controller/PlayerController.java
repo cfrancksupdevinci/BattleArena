@@ -7,6 +7,8 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import org.example.battlearena.Game;
 import org.example.battlearena.model.Player;
 import org.example.battlearena.repository.PlayerRepository;
 
@@ -19,15 +21,15 @@ public class PlayerController {
     private static final PlayerRepository repository = new PlayerRepository();
 
     @GET
-    public List<Player> getAllPlayer(){
+    public List<Player> getAllPlayer() {
         return repository.getAllPlayer();
     }
 
     @GET
     @Path("/{id}")
-    public Response getPlayerById(@PathParam("id") Long id){
+    public Response getPlayerById(@PathParam("id") Long id) {
         Player player = repository.getPlayerById(id);
-        if (player == null){
+        if (player == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Player not found").build();
         }
         return Response.ok(player).build();
@@ -36,17 +38,20 @@ public class PlayerController {
     @GET
     @Path("/can-move/{id}/{x}/{y}")
     public Response canMove(@PathParam("id") Long id,
-                            @PathParam("x") int x,
-                            @PathParam("y") int y) {
+            @PathParam("x") int x,
+            @PathParam("y") int y) {
         Player player = repository.getPlayerById(id);
 
         if (player == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Player not found").build();
         }
 
-        //TODO Victoria: modifier nom "GameLogic par le nom du fichier java utiliser pour le FX
-        boolean canMove = true; //GameLogic.canMove(player, x, y);
+        // Créer une instance de Game et appeler movePlayer
+        Game game = new Game();
+        game.movePlayer(x, y); // Appel à la méthode movePlayer
 
-        return Response.ok(canMove).build();
+        // Retourner une réponse positive pour signaler le déplacement
+        return Response.ok("Player moved successfully").build();
     }
+
 }
