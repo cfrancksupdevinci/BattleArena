@@ -1,11 +1,14 @@
 package org.example.battlearena;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Game extends Application {
 
@@ -18,6 +21,7 @@ public class Game extends Application {
 
     private int currentPlayerIndex = 0; // Indice du joueur actuel (tour par tour)
     private GameDisplay gameDisplay;
+    private Text eventMessage = new Text();
 
     @Override
     public void start(Stage primaryStage) {
@@ -58,6 +62,10 @@ public class Game extends Application {
         HBox hbox = new HBox(10, gameGrid.getGrid(), gameDisplay.createInfoBox());
         hbox.setSpacing(20); // Espacement entre la grille et l'affichage
 
+        eventMessage.setStyle("-fx-font-size: 20px; -fx-fill: red;");
+        eventMessage.setOpacity(0); // Au départ, le texte est invisible
+        hbox.getChildren().add(eventMessage);
+
         // Définir la taille de la scène et ajouter le HBox
         Scene scene = new Scene(hbox, 800, 600);
 
@@ -75,7 +83,11 @@ public class Game extends Application {
                     currentPlayerIndex = (currentPlayerIndex + 1) % 3;
                 } while (!getCurrentPlayer().isAlive());
 
-                hasAttacked = false; // Réinitialiser l'indicateur d'attaque pour le joueur suivant
+                hasAttacked = false;
+
+                // Générer un événement aléatoire de temps en temps
+                generateRandomEvent(getCurrentPlayer());
+
                 gameDisplay.updateTurnInfo(getCurrentPlayer(), player1, player2, player3);
             }
         });
@@ -83,6 +95,36 @@ public class Game extends Application {
         primaryStage.setTitle("Battle Arena");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    /**
+     * Génère un événement aléatoire (ex : tempête).
+     */
+    private void generateRandomEvent(Player player) {
+        // 50% de chance de déclencher un événement
+        if (Math.random() < 0.2) {
+            triggerStormEvent(player);
+        }
+    }
+
+    /**
+     * Gère un événement de tempête.
+     */
+    private void triggerStormEvent(Player player) {
+        // Appliquer des dégâts au joueur
+        player.setHealth(player.getHealth() - 10); // La tempête prend 10 points de vie
+        if (player.getHealth() <= 0) {
+            handlePlayerDeath(player, getCurrentPlayer());
+        }
+
+        // Afficher un message sur l'écran
+        eventMessage.setText("Une tempête frappe " + player.getName() + " et lui prend 10 PV!");
+        eventMessage.setOpacity(1); // Rendre le texte visible
+
+        // Faire disparaître le message après 2 secondes
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+        pause.setOnFinished(event -> eventMessage.setOpacity(0)); // Rendre le texte invisible
+        pause.play();
     }
 
     /**
