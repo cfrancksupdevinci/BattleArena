@@ -11,6 +11,7 @@ public class Player {
     private int col;
     private Circle avatar; // Représentation graphique du joueur
     private boolean hasAttacked = false;
+    private boolean alive = true;
 
     public Player(String name, int health, int xp, int row, int col) {
         this.name = name;
@@ -23,6 +24,14 @@ public class Player {
         this.avatar = new Circle(20); // Rayon de 20 pixels
         this.avatar.setFill(Color.HOTPINK); // Couleur du joueur
         this.avatar.setStroke(Color.BLACK); // Bordure noire
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 
     // Getters et setters
