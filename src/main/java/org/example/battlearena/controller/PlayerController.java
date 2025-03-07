@@ -1,6 +1,5 @@
 package org.example.battlearena.controller;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import jakarta.websocket.server.PathParam;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -8,11 +7,9 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.controlsfx.control.cell.MediaImageCell;
 import org.example.battlearena.model.Player;
 import org.example.battlearena.repository.PlayerRepository;
 
-import java.awt.*;
 import java.util.List;
 
 @Path("/player")
