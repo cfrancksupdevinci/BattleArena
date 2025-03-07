@@ -20,7 +20,7 @@ public class Player {
 
         // Création du cercle représentant le joueur
         this.avatar = new Circle(20); // Rayon de 20 pixels
-        this.avatar.setFill(Color.BLUE); // Couleur du joueur
+        this.avatar.setFill(Color.HOTPINK); // Couleur du joueur
         this.avatar.setStroke(Color.BLACK); // Bordure noire
     }
 

@@ -19,7 +19,7 @@ public class GameGrid {
             for (int col = 0; col < GRID_SIZE; col++) {
                 Label cell = new Label();
                 cell.setMinSize(50, 50);
-                cell.setStyle("-fx-border-color: black; -fx-background-color: lightgray;");
+                cell.setStyle("-fx-border-color: black; -fx-background-color: lightpink;");
                 grid.add(cell, col, row);
             }
         }
