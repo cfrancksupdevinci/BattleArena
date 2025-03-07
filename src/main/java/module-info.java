@@ -12,7 +12,6 @@ module org.example.battlearena {
     requires com.almasb.fxgl.all;
     requires java.desktop;
     requires com.fasterxml.jackson.annotation;
-    requires jakarta.jakartaee.api;
 
     opens org.example.battlearena to javafx.fxml;
     exports org.example.battlearena;
