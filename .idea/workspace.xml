@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="da762728-e24c-4d25-b15d-8a6dcbd7e210" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/battlearena/GameWithPlayer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/battlearena/Player.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/battlearena/Obstacle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/battlearena/GameGrid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/battlearena/GameGrid.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -67,7 +67,7 @@
       <option name="presentableId" value="Default" />
       <updated>1741337006126</updated>
       <workItem from="1741337007208" duration="2000" />
-      <workItem from="1741341857712" duration="393000" />
+      <workItem from="1741341857712" duration="720000" />
     </task>
     <servers />
   </component>

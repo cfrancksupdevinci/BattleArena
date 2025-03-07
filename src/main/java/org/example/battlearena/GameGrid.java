@@ -45,4 +45,14 @@ public class GameGrid {
     public void removeFromGrid(StackPane content) {
         grid.getChildren().remove(content);
     }
+
+    /**
+     * Ajoute un obstacle sur la grille à une position donnée.
+     */
+    public void addObstacle(Obstacle obstacle) {
+        StackPane obstacleContainer = new StackPane();
+        obstacleContainer.getChildren().add(obstacle.getShape());
+        addToGrid(obstacleContainer, obstacle.getRow(), obstacle.getCol());
+    }
+
 }
