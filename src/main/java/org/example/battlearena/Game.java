@@ -48,9 +48,10 @@ public class Game extends Application {
     }
 
     /**
-     * Déplace le joueur si la nouvelle position est valide (dans les limites et sans obstacle).
+     * Déplace le joueur si la nouvelle position est valide (dans les limites et
+     * sans obstacle).
      */
-    private void movePlayer(int deltaX, int deltaY) {
+    public void movePlayer(int deltaX, int deltaY) {
         int newRow = player.getRow() + deltaY;
         int newCol = player.getCol() + deltaX;
 
@@ -94,7 +95,7 @@ public class Game extends Application {
      * Retourne la liste des obstacles (facilement accessible pour vérification).
      */
     private Obstacle[] getObstacles() {
-        return new Obstacle[]{
+        return new Obstacle[] {
                 new Obstacle(2, 3),
                 new Obstacle(4, 5)
         };
@@ -104,4 +105,3 @@ public class Game extends Application {
         launch(args);
     }
 }
-

@@ -1,5 +1,6 @@
 package org.example.battlearena.repository;
 
+import org.example.battlearena.model.Objective;
 import org.example.battlearena.model.Player;
 
 import java.util.List;
@@ -13,6 +14,11 @@ public class PlayerRepository implements PlayerRepositoryInterface {
 
     @Override
     public Player getPlayerById(Long id) {
+        return null;
+    }
+
+    @Override
+    public Objective getObjectiveById(Long objectiveId) {
         return null;
     }
 
@@ -81,5 +87,5 @@ public class PlayerRepository implements PlayerRepositoryInterface {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteAll'");
     }
-    
+
 }
