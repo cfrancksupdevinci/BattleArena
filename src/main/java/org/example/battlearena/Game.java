@@ -14,6 +14,8 @@ public class Game extends Application {
     private Player player2;
     private Player player3;
 
+    private boolean hasAttacked = false;
+
     private int currentPlayerIndex = 0; // Indice du joueur actuel (tour par tour)
     private GameDisplay gameDisplay;
 
@@ -58,15 +60,18 @@ public class Game extends Application {
 
         // Définir la taille de la scène et ajouter le HBox
         Scene scene = new Scene(hbox, 800, 600);
+
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.SPACE) {
-                // Vérifier si un joueur peut attaquer
-                if (canAttack(getCurrentPlayer())) {
+                // Vérifier si le joueur peut attaquer
+                if (!hasAttacked && canAttack(getCurrentPlayer())) {
                     attack(getCurrentPlayer());
+                    hasAttacked = true; // Marque l'attaque comme effectuée
                     gameDisplay.updateTurnInfo(getCurrentPlayer(), player1, player2, player3);
                 }
             } else if (handlePlayerMovement(event, getCurrentPlayer())) {
                 currentPlayerIndex = (currentPlayerIndex + 1) % 3; // Passer au joueur suivant
+                hasAttacked = false; // Réinitialiser l'indicateur d'attaque pour le joueur suivant
                 gameDisplay.updateTurnInfo(getCurrentPlayer(), player1, player2, player3);
             }
         });
