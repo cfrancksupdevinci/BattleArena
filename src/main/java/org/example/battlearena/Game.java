@@ -27,12 +27,12 @@ public class Game extends Application {
         player1Container.getChildren().add(player1.getAvatar());
         gameGrid.addToGrid(player1Container, player1.getRow(), player1.getCol());
 
-        player2 = new Player("Joueur 2", 100, 1, 0, 0); // Position initiale du joueur 2
+        player2 = new Player("Joueur 2", 100, 0, 0, 0); // Position initiale du joueur 2
         StackPane player2Container = new StackPane();
         player2Container.getChildren().add(player2.getAvatar());
         gameGrid.addToGrid(player2Container, player2.getRow(), player2.getCol());
 
-        player3 = new Player("Joueur 3", 100, 2, 5, 5); // Position initiale du joueur 3
+        player3 = new Player("Joueur 3", 100, 0, 5, 5); // Position initiale du joueur 3
         StackPane player3Container = new StackPane();
         player3Container.getChildren().add(player3.getAvatar());
         gameGrid.addToGrid(player3Container, player3.getRow(), player3.getCol());
@@ -53,7 +53,13 @@ public class Game extends Application {
         // Définir la taille de la scène et ajouter le HBox
         Scene scene = new Scene(hbox, 800, 600);
         scene.setOnKeyPressed(event -> {
-            if (handlePlayerMovement(event, getCurrentPlayer())) {
+            if (event.getCode() == javafx.scene.input.KeyCode.SPACE) {
+                // Vérifier si un joueur peut attaquer
+                if (canAttack(getCurrentPlayer())) {
+                    attack(getCurrentPlayer());
+                    gameDisplay.updateTurnInfo(getCurrentPlayer(), player1, player2, player3);
+                }
+            } else if (handlePlayerMovement(event, getCurrentPlayer())) {
                 currentPlayerIndex = (currentPlayerIndex + 1) % 3; // Passer au joueur suivant
                 gameDisplay.updateTurnInfo(getCurrentPlayer(), player1, player2, player3);
             }
@@ -62,6 +68,48 @@ public class Game extends Application {
         primaryStage.setTitle("Battle Arena");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    /**
+     * Vérifie si un joueur peut attaquer un autre joueur.
+     */
+    private boolean canAttack(Player currentPlayer) {
+        // Vérifier si un autre joueur est dans la même ligne ou colonne que le joueur
+        // actuel
+        for (Player otherPlayer : new Player[] { player1, player2, player3 }) {
+            if (otherPlayer != currentPlayer) {
+                if (currentPlayer.getRow() == otherPlayer.getRow()
+                        && Math.abs(currentPlayer.getCol() - otherPlayer.getCol()) == 1) {
+                    // Joueur à gauche ou à droite
+                    return true;
+                } else if (currentPlayer.getCol() == otherPlayer.getCol()
+                        && Math.abs(currentPlayer.getRow() - otherPlayer.getRow()) == 1) {
+                    // Joueur au-dessus ou en dessous
+                    return true;
+                }
+            }
+        }
+        return false; // Aucun joueur à proximité immédiate
+    }
+
+    /**
+     * Effectue l'attaque sur le joueur en face du joueur actuel.
+     */
+    private void attack(Player attacker) {
+        for (Player target : new Player[] { player1, player2, player3 }) {
+            if (target != attacker) {
+                // Vérifier si le joueur cible est à côté du joueur attaquant
+                if (attacker.getRow() == target.getRow() && Math.abs(attacker.getCol() - target.getCol()) == 1) {
+                    // Attaque sur le joueur à gauche ou à droite
+                    target.setHealth(target.getHealth() - 10);
+                    return;
+                } else if (attacker.getCol() == target.getCol() && Math.abs(attacker.getRow() - target.getRow()) == 1) {
+                    // Attaque sur le joueur au-dessus ou en dessous
+                    target.setHealth(target.getHealth() - 10);
+                    return;
+                }
+            }
+        }
     }
 
     /**

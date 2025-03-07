@@ -48,7 +48,7 @@ public class PlayerController {
             return Response.status(Response.Status.NOT_FOUND).entity("Player not found").build();
         }
 
-        game.movePlayer(x, y);
+        // game.movePlayer(x, y);
 
         return Response.ok("Player moved successfully").build();
     }
@@ -64,7 +64,7 @@ public class PlayerController {
         }
 
         // TODO Victoria, ajouter méthode attack dans Game
-        game.attack(attacker, target);
+        // game.attack(attacker, target);
 
         return Response.ok("Attack completed").build();
     }
@@ -79,7 +79,7 @@ public class PlayerController {
         }
 
         // TODO Victoria, ajouter méthode checkSurvival dans Game
-        boolean survived = game.checkSurvival(player);
+        // boolean survived = game.checkSurvival(player);
 
         return Response.ok(survived ? "Survived this turn" : "Did not survive this turn").build();
     }
@@ -95,7 +95,7 @@ public class PlayerController {
         }
 
         // TODO Victoria, ajouter méthode captureObjective dans Game
-        game.captureObjective(player, objective);
+        // game.captureObjective(player, objective);
 
         return Response.ok("Objective captured").build();
     }
