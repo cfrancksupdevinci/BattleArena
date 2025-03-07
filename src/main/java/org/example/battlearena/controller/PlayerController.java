@@ -3,6 +3,7 @@ package org.example.battlearena.controller;
 import jakarta.websocket.server.PathParam;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
@@ -21,6 +22,38 @@ import java.util.List;
 public class PlayerController {
     private static final PlayerRepository repository = new PlayerRepository();
     private static final Game game = new Game();
+
+    @POST
+    @Path("/connect")
+    @Consumes("application/json")
+    public Response connectPlayer(Player player) {
+        // Générer un identifiant unique pour le joueur
+        player.setId(generateUniqueId());
+
+        // Sauvegarder le joueur (par exemple dans une base de données ou une collection
+        // en mémoire)
+        repository.save(player);
+
+        // Retourner l'état initial du jeu : joueurs, XP, positions
+        String gameState = getInitialGameState();
+
+        return Response.ok(gameState).build();
+    }
+
+    // Méthode pour générer un identifiant unique pour le joueur
+    private Long generateUniqueId() {
+        // Vous pouvez générer un identifiant unique de manière simple comme un
+        // timestamp ou en utilisant UUID.
+        return System.currentTimeMillis();
+    }
+
+    // Méthode pour obtenir l'état initial du jeu
+    private String getInitialGameState() {
+        // Vous pouvez retourner un objet JSON contenant les informations des joueurs,
+        // XP, positions.
+        // Voici un exemple simple :
+        return "{ \"players\": [ {\"id\": 1, \"name\": \"Joueur1\", \"xp\": 100, \"position\": [0, 0] } ] }";
+    }
 
     @GET
     public List<Player> getAllPlayer() {

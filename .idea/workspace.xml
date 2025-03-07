@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="da762728-e24c-4d25-b15d-8a6dcbd7e210" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/battlearena/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/battlearena/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/battlearena/controller/PlayerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/battlearena/controller/PlayerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/battlearena/model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/battlearena/model/Player.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +47,7 @@
     "Application.GameWithPlayer.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "feature/player__actions",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/mlle franck/Documents/Java/BattleArena",
     "node.js.detected.package.eslint": "true",
@@ -77,7 +77,7 @@
       <workItem from="1741337007208" duration="580000" />
       <workItem from="1741337658682" duration="40000" />
       <workItem from="1741341735459" duration="1803000" />
-      <workItem from="1741347559521" duration="658000" />
+      <workItem from="1741347559521" duration="1253000" />
     </task>
     <servers />
   </component>

@@ -4,19 +4,19 @@ import jakarta.persistence.Entity;
 
 @Entity(name = "player")
 public class Player {
-    private int id;
+    private Long id; // Change from int to Long to match the ID type you're using
     private String name;
     private int life;
     private Position pos;
 
-    public Player(int id, String name, int life, Position pos) {
+    public Player(Long id, String name, int life, Position pos) {
         this.id = id;
         this.name = name;
         this.life = life;
         this.pos = pos;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -26,6 +26,10 @@ public class Player {
 
     public int getLife() {
         return life;
+    }
+
+    public void setId(Long id) { // Change to Long and void
+        this.id = id;
     }
 
     public void setLife(int life) {
