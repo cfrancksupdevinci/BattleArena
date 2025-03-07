@@ -25,17 +25,17 @@ public class Game extends Application {
         gameGrid = new GameGrid();
 
         // Création et placement des joueurs
-        player1 = new Player("Joueur 1", 100, 0, 9, 9);
+        player1 = new Player("Joueur 1", 10, 0, 9, 9);
         StackPane player1Container = new StackPane();
         player1Container.getChildren().add(player1.getAvatar());
         gameGrid.addToGrid(player1Container, player1.getRow(), player1.getCol());
 
-        player2 = new Player("Joueur 2", 100, 0, 0, 0); // Position initiale du joueur 2
+        player2 = new Player("Joueur 2", 10, 0, 0, 0); // Position initiale du joueur 2
         StackPane player2Container = new StackPane();
         player2Container.getChildren().add(player2.getAvatar());
         gameGrid.addToGrid(player2Container, player2.getRow(), player2.getCol());
 
-        player3 = new Player("Joueur 3", 100, 0, 5, 5); // Position initiale du joueur 3
+        player3 = new Player("Joueur 3", 10, 0, 5, 5); // Position initiale du joueur 3
         StackPane player3Container = new StackPane();
         player3Container.getChildren().add(player3.getAvatar());
         gameGrid.addToGrid(player3Container, player3.getRow(), player3.getCol());
@@ -70,7 +70,11 @@ public class Game extends Application {
                     gameDisplay.updateTurnInfo(getCurrentPlayer(), player1, player2, player3);
                 }
             } else if (handlePlayerMovement(event, getCurrentPlayer())) {
-                currentPlayerIndex = (currentPlayerIndex + 1) % 3; // Passer au joueur suivant
+                // Passer au joueur suivant tout en ignorant les joueurs morts
+                do {
+                    currentPlayerIndex = (currentPlayerIndex + 1) % 3;
+                } while (!getCurrentPlayer().isAlive());
+
                 hasAttacked = false; // Réinitialiser l'indicateur d'attaque pour le joueur suivant
                 gameDisplay.updateTurnInfo(getCurrentPlayer(), player1, player2, player3);
             }
@@ -99,23 +103,61 @@ public class Game extends Application {
         return false; // Aucun joueur à proximité immédiate
     }
 
-    /**
-     * Effectue l'attaque sur le joueur en face du joueur actuel.
-     */
     private void attack(Player attacker) {
         for (Player target : new Player[] { player1, player2, player3 }) {
-            if (target != attacker) {
+            if (target != attacker && target.isAlive()) { // Vérifie si le joueur est encore en vie
                 if (attacker.getRow() == target.getRow() && Math.abs(attacker.getCol() - target.getCol()) == 1) {
                     target.setHealth(target.getHealth() - 10); // Attaque sur le joueur à gauche ou à droite
-                    attacker.addXP(10); // Gagne 10 XP après une attaque
+                    if (target.getHealth() <= 0) {
+                        handlePlayerDeath(target, attacker);
+                    } else {
+                        attacker.addXP(10); // Gagne 10 XP après une attaque réussie
+                    }
                     return;
                 } else if (attacker.getCol() == target.getCol() && Math.abs(attacker.getRow() - target.getRow()) == 1) {
                     target.setHealth(target.getHealth() - 10); // Attaque sur le joueur au-dessus ou en dessous
-                    attacker.addXP(10); // Gagne 10 XP après une attaque
+                    if (target.getHealth() <= 0) {
+                        handlePlayerDeath(target, attacker);
+                    } else {
+                        attacker.addXP(10); // Gagne 10 XP après une attaque réussie
+                    }
                     return;
                 }
             }
         }
+    }
+
+    /**
+     * Gère la mort d'un joueur, donne 30 XP à l'attaquant et enlève le joueur de la
+     * grille.
+     */
+    private void handlePlayerDeath(Player target, Player attacker) {
+        System.out.println(target.getName() + " a été éliminé par " + attacker.getName() + "!");
+        attacker.addXP(30); // Gain de 30 XP pour l'attaque décisive
+
+        // Retirer l'avatar du joueur de la grille
+        gameGrid.getGrid().getChildren().remove(target.getAvatar());
+
+        // Si le joueur est contenu dans un StackPane, on le retire aussi
+        StackPane playerContainer = getPlayerContainer(target);
+        if (playerContainer != null) {
+            gameGrid.getGrid().getChildren().remove(playerContainer);
+        }
+
+        // Marquer le joueur comme inactif pour éviter d'autres actions
+        target.setAlive(false); // Le joueur est maintenant "mort" et inactif
+    }
+
+    private StackPane getPlayerContainer(Player player) {
+        for (javafx.scene.Node node : gameGrid.getGrid().getChildren()) {
+            if (node instanceof StackPane) {
+                StackPane stackPane = (StackPane) node;
+                if (stackPane.getChildren().contains(player.getAvatar())) {
+                    return stackPane; // Retourne le StackPane contenant l'avatar du joueur
+                }
+            }
+        }
+        return null; // Si aucun StackPane trouvé
     }
 
     /**
