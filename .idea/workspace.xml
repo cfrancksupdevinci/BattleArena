@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="da762728-e24c-4d25-b15d-8a6dcbd7e210" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/battlearena/GameGrid.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/battlearena/GameWithPlayer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/battlearena/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/battlearena/GameGrid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/battlearena/GameGrid.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,11 +43,17 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.GameGrid.executor": "Run",
+    "Application.GameWithPlayer.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/git/java_projet2/BattleArena",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
@@ -59,7 +67,7 @@
       <option name="presentableId" value="Default" />
       <updated>1741337006126</updated>
       <workItem from="1741337007208" duration="2000" />
-      <workItem from="1741341857712" duration="53000" />
+      <workItem from="1741341857712" duration="393000" />
     </task>
     <servers />
   </component>

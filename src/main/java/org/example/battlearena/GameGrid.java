@@ -1,42 +1,48 @@
 package org.example.battlearena;
-
-import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
+import javafx.scene.layout.StackPane;
 
-public class GameGrid extends Application {
+public class GameGrid {
+    private static final int GRID_SIZE = 10;
+    private final GridPane grid;
 
-    private static final int GRID_SIZE = 10; // Taille de la grille (10x10)
+    public GameGrid() {
+        grid = new GridPane();
+        grid.setPadding(new Insets(10));
+        grid.setHgap(5);
+        grid.setVgap(5);
 
-    @Override
-    public void start(Stage primaryStage) {
-        // Création de la grille
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10)); // Marges autour de la grille
-        grid.setHgap(5); // Espacement horizontal entre les cases
-        grid.setVgap(5); // Espacement vertical entre les cases
-
-        // Remplissage de la grille avec des cellules
+        // Création des cellules de la grille
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
                 Label cell = new Label();
-                cell.setMinSize(50, 50); // Taille minimale des cellules
-                cell.setStyle("-fx-border-color: black; -fx-background-color: lightgray;"); // Style CSS
-                grid.add(cell, col, row); // Ajouter la cellule à la position (col, row)
+                cell.setMinSize(50, 50);
+                cell.setStyle("-fx-border-color: black; -fx-background-color: lightgray;");
+                grid.add(cell, col, row);
             }
         }
-
-        // Configuration de la scène
-        Scene scene = new Scene(grid, 600, 600); // Taille de la fenêtre
-        primaryStage.setTitle("Grille de Jeu");
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    /**
+     * Retourne la grille pour l'intégrer dans une interface.
+     */
+    public GridPane getGrid() {
+        return grid;
+    }
+
+    /**
+     * Ajoute un élément (par ex. un joueur) sur la grille à une position donnée.
+     */
+    public void addToGrid(StackPane content, int row, int col) {
+        grid.add(content, col, row); // Les colonnes et lignes dans GridPane
+    }
+
+    /**
+     * Supprime un élément de la grille (facultatif si besoin).
+     */
+    public void removeFromGrid(StackPane content) {
+        grid.getChildren().remove(content);
     }
 }
