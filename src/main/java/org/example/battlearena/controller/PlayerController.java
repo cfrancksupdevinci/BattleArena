@@ -48,7 +48,7 @@ public class PlayerController {
         }
 
         //TODO Victoria: modifier nom "GameLogic par le nom du fichier java utiliser pour le FX
-        boolean canMove = GameLogic.canMove(player, x, y);
+        boolean canMove = true; //GameLogic.canMove(player, x, y);
 
         return Response.ok(canMove).build();
     }
