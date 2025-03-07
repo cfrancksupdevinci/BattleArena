@@ -2,6 +2,9 @@ package org.example.battlearena;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 public class Player {
     private String name;
@@ -10,10 +13,11 @@ public class Player {
     private int row;
     private int col;
     private Circle avatar; // Représentation graphique du joueur
+    private Text playerNumber; // Texte pour afficher le numéro du joueur
     private boolean hasAttacked = false;
     private boolean alive = true;
 
-    public Player(String name, int health, int xp, int row, int col) {
+    public Player(String name, int health, int xp, int row, int col, int playerNumber) {
         this.name = name;
         this.health = health;
         this.xp = xp;
@@ -24,6 +28,14 @@ public class Player {
         this.avatar = new Circle(20); // Rayon de 20 pixels
         this.avatar.setFill(Color.HOTPINK); // Couleur du joueur
         this.avatar.setStroke(Color.BLACK); // Bordure noire
+
+        // Création du texte pour afficher le numéro du joueur
+        this.playerNumber = new Text(String.valueOf(playerNumber)); // Le numéro du joueur comme texte
+        this.playerNumber.setFont(Font.font(14)); // Taille de police
+        this.playerNumber.setFill(Color.BLACK); // Couleur du texte
+        this.playerNumber.setTextAlignment(TextAlignment.CENTER); // Centrer le texte
+        this.playerNumber.setX(this.avatar.getCenterX() - 6); // Position du texte horizontalement
+        this.playerNumber.setY(this.avatar.getCenterY() + 5); // Position du texte verticalement
     }
 
     public boolean isAlive() {
@@ -79,6 +91,10 @@ public class Player {
         return avatar;
     }
 
+    public Text getPlayerNumber() {
+        return playerNumber;
+    }
+
     // Mise à jour de la position
     public void moveTo(int newRow, int newCol) {
         this.row = newRow;
@@ -96,5 +112,4 @@ public class Player {
     public void setHasAttacked(boolean hasAttacked) {
         this.hasAttacked = hasAttacked;
     }
-
 }

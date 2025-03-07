@@ -1,5 +1,8 @@
 package org.example.battlearena;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -23,23 +26,26 @@ public class Game extends Application {
     private GameDisplay gameDisplay;
     private Text eventMessage = new Text();
 
+    private List<Chest> chests = new ArrayList<>(); // Liste pour stocker les coffres
+    private int chestEventCounter = 0;
+
     @Override
     public void start(Stage primaryStage) {
         // Création de la grille de jeu
         gameGrid = new GameGrid();
 
         // Création et placement des joueurs
-        player1 = new Player("Joueur 1", 10, 0, 9, 9);
+        player1 = new Player("Joueur 1", 10, 0, 9, 9, 1);
         StackPane player1Container = new StackPane();
         player1Container.getChildren().add(player1.getAvatar());
         gameGrid.addToGrid(player1Container, player1.getRow(), player1.getCol());
 
-        player2 = new Player("Joueur 2", 10, 0, 0, 0); // Position initiale du joueur 2
+        player2 = new Player("Joueur 2", 10, 0, 0, 0, 2); // Position initiale du joueur 2
         StackPane player2Container = new StackPane();
         player2Container.getChildren().add(player2.getAvatar());
         gameGrid.addToGrid(player2Container, player2.getRow(), player2.getCol());
 
-        player3 = new Player("Joueur 3", 10, 0, 5, 5); // Position initiale du joueur 3
+        player3 = new Player("Joueur 3", 10, 0, 5, 5, 3); // Position initiale du joueur 3
         StackPane player3Container = new StackPane();
         player3Container.getChildren().add(player3.getAvatar());
         gameGrid.addToGrid(player3Container, player3.getRow(), player3.getCol());
@@ -88,6 +94,8 @@ public class Game extends Application {
                 // Générer un événement aléatoire de temps en temps
                 generateRandomEvent(getCurrentPlayer());
 
+                checkForChest(getCurrentPlayer());
+
                 gameDisplay.updateTurnInfo(getCurrentPlayer(), player1, player2, player3);
             }
         });
@@ -102,8 +110,15 @@ public class Game extends Application {
      */
     private void generateRandomEvent(Player player) {
         // 50% de chance de déclencher un événement
-        if (Math.random() < 0.2) {
+        if (Math.random() < 0.01) {
             triggerStormEvent(player);
+        }
+
+        // Apparition d'un coffre tous les 5 tours
+        chestEventCounter++;
+        if (chestEventCounter >= 8) {
+            spawnChest(); // Générer un coffre
+            chestEventCounter = 0; // Réinitialiser le compteur
         }
     }
 
@@ -125,6 +140,58 @@ public class Game extends Application {
         PauseTransition pause = new PauseTransition(Duration.seconds(2));
         pause.setOnFinished(event -> eventMessage.setOpacity(0)); // Rendre le texte invisible
         pause.play();
+    }
+
+    private void spawnChest() {
+        // Générer un coffre sur une position aléatoire
+        int row = (int) (Math.random() * 10);
+        int col = (int) (Math.random() * 10);
+
+        // Vérifier que le coffre ne se trouve pas déjà sur une case occupée
+        if (!isOccupied(row, col)) {
+            Chest chest = new Chest(row, col);
+            chests.add(chest);
+
+            // Ajouter le coffre visuel sur la grille
+            StackPane chestContainer = new StackPane();
+            chestContainer.getChildren().add(chest.getChestRectangle());
+            gameGrid.addToGrid(chestContainer, row, col);
+
+            // Afficher le coffre
+            System.out.println("Un coffre apparaît en (" + row + ", " + col + ")!");
+        }
+    }
+
+    private boolean isOccupied(int row, int col) {
+        // Vérifier si un joueur ou un obstacle occupe la case
+        if (isPlayerAtPosition(row, col)) {
+            return true;
+        }
+
+        for (Obstacle obstacle : getObstacles()) {
+            if (obstacle.getRow() == row && obstacle.getCol() == col) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void checkForChest(Player player) {
+        for (Chest chest : chests) {
+            if (player.getRow() == chest.getRow() && player.getCol() == chest.getCol()) {
+                player.addXP(20); // Le joueur gagne 20 XP
+                chests.remove(chest); // Retirer le coffre de la liste
+
+                // Retirer le coffre visuel de la grille
+                gameGrid.getGrid().getChildren().remove(chest.getChestRectangle());
+
+                System.out.println(player.getName() + " a trouvé un coffre et gagne 20 XP!");
+
+                // Une fois que le coffre est pris, on peut sortir de la boucle
+                break;
+            }
+        }
     }
 
     /**
