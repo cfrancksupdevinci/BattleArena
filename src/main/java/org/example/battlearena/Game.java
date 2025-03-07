@@ -54,12 +54,15 @@ public class Game extends Application {
         Scene scene = new Scene(hbox, 800, 600);
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == javafx.scene.input.KeyCode.SPACE) {
-                // Vérifier si un joueur peut attaquer
-                if (canAttack(getCurrentPlayer())) {
-                    attack(getCurrentPlayer());
-                    gameDisplay.updateTurnInfo(getCurrentPlayer(), player1, player2, player3);
+                Player currentPlayer = getCurrentPlayer();
+                if (!currentPlayer.hasAttacked() && canAttack(currentPlayer)) {
+                    attack(currentPlayer);
+                    gameDisplay.updateTurnInfo(currentPlayer, player1, player2, player3);
+                } else {
+                    System.out.println(currentPlayer.getName() + " ne peut pas attaquer ce tour.");
                 }
             } else if (handlePlayerMovement(event, getCurrentPlayer())) {
+                getCurrentPlayer().setHasAttacked(false); // Réinitialiser l'attaque pour le prochain tour
                 currentPlayerIndex = (currentPlayerIndex + 1) % 3; // Passer au joueur suivant
                 gameDisplay.updateTurnInfo(getCurrentPlayer(), player1, player2, player3);
             }
@@ -74,42 +77,54 @@ public class Game extends Application {
      * Vérifie si un joueur peut attaquer un autre joueur.
      */
     private boolean canAttack(Player currentPlayer) {
-        // Vérifier si un autre joueur est dans la même ligne ou colonne que le joueur
-        // actuel
         for (Player otherPlayer : new Player[] { player1, player2, player3 }) {
             if (otherPlayer != currentPlayer) {
-                if (currentPlayer.getRow() == otherPlayer.getRow()
-                        && Math.abs(currentPlayer.getCol() - otherPlayer.getCol()) == 1) {
-                    // Joueur à gauche ou à droite
-                    return true;
-                } else if (currentPlayer.getCol() == otherPlayer.getCol()
-                        && Math.abs(currentPlayer.getRow() - otherPlayer.getRow()) == 1) {
-                    // Joueur au-dessus ou en dessous
-                    return true;
+                // Vérifier si le joueur est adjacent (même ligne ou même colonne)
+                if ((currentPlayer.getRow() == otherPlayer.getRow()
+                        && Math.abs(currentPlayer.getCol() - otherPlayer.getCol()) == 1) ||
+                        (currentPlayer.getCol() == otherPlayer.getCol()
+                                && Math.abs(currentPlayer.getRow() - otherPlayer.getRow()) == 1)) {
+                    return true; // Un joueur est adjacent
                 }
             }
         }
-        return false; // Aucun joueur à proximité immédiate
+        return false; // Aucun joueur adjacent
     }
 
     /**
-     * Effectue l'attaque sur le joueur en face du joueur actuel.
+     * Effectue une attaque sur un joueur adjacent.
+     * L'attaque peut se faire dans toutes les directions adjacentes (haut, bas,
+     * gauche, droite).
      */
     private void attack(Player attacker) {
+        if (attacker.hasAttacked()) {
+            System.out.println(attacker.getName() + " a déjà attaqué ce tour.");
+            return;
+        }
+
         for (Player target : new Player[] { player1, player2, player3 }) {
             if (target != attacker) {
-                // Vérifier si le joueur cible est à côté du joueur attaquant
-                if (attacker.getRow() == target.getRow() && Math.abs(attacker.getCol() - target.getCol()) == 1) {
-                    // Attaque sur le joueur à gauche ou à droite
+                // Vérifier si le joueur cible est adjacent (haut, bas, gauche, droite)
+                if ((attacker.getRow() == target.getRow() && Math.abs(attacker.getCol() - target.getCol()) == 1) ||
+                        (attacker.getCol() == target.getCol() && Math.abs(attacker.getRow() - target.getRow()) == 1)) {
+
+                    // Réduire la santé du joueur cible
                     target.setHealth(target.getHealth() - 10);
-                    return;
-                } else if (attacker.getCol() == target.getCol() && Math.abs(attacker.getRow() - target.getRow()) == 1) {
-                    // Attaque sur le joueur au-dessus ou en dessous
-                    target.setHealth(target.getHealth() - 10);
+
+                    // Ajouter de l'XP à l'attaquant
+                    attacker.addXP(10);
+
+                    // Marquer l'attaquant comme ayant attaqué ce tour
+                    attacker.setHasAttacked(true);
+
+                    // Afficher une notification
+                    System.out.println(attacker.getName() + " attaque " + target.getName() + " et gagne 10 XP!");
                     return;
                 }
             }
         }
+
+        System.out.println(attacker.getName() + " n'a pas de cible à attaquer.");
     }
 
     /**
@@ -151,6 +166,8 @@ public class Game extends Application {
         // Vérifier si le mouvement est valide
         if (isMoveValid(player, deltaX, deltaY)) {
             movePlayer(player, deltaX, deltaY); // Déplacer le joueur
+            getCurrentPlayer().setHasAttacked(false); // Réinitialiser l'état d'attaque pour le joueur actuel
+
             return true; // Mouvement valide, passer au joueur suivant
         } else {
             return false; // Mouvement invalide, reste au tour actuel
